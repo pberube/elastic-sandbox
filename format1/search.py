@@ -6,6 +6,29 @@ class Search():
         self.es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
         self.index = index
 
+    def by_title(self, title):
+        s = self.es.search(index=self.index, body={
+            'size': 1000,
+            'query': {
+                "bool": {
+                "must": [],
+                "filter": [{
+                    "bool": {
+                        "should": [
+                        {
+                            "match_phrase": {
+                            "title": title
+                            }}],
+                        "minimum_should_match": 1
+                    }}],
+                "should": [],
+                "must_not": []
+                }}})
+        result = list()
+        for r in s['hits']['hits']:
+            result.append({**r['_source'], **{'_id':int(r['_id'])}})
+        return result
+
     def by_prefix(self, prefix):
         s = self.es.search(index=self.index, body={
             'size': 1000,
@@ -17,7 +40,7 @@ class Search():
                             }}}}})
         result = list()
         for r in s['hits']['hits']:
-            result.append(r['_source'])
+            result.append({**r['_source'], **{'_id':int(r['_id'])}})
         return result
 
     def sds_by_srs_id(self, srs_id):
@@ -55,5 +78,5 @@ class Search():
                 }}})
         result = list()
         for r in s['hits']['hits']:
-            result.append(r['_source'])
+            result.append({**r['_source'], **{'_id':int(r['_id'])}})
         return result

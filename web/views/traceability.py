@@ -5,7 +5,7 @@ from format1.graph import format_graph
 import urllib.parse
 
 
-@web.route("/trace/<srs_id>")
+@web.route("/project1/<srs_id>")
 def visual(srs_id):
     trace = Search('traceability')
     srs = trace.srs_by_srs_id(srs_id)

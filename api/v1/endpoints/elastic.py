@@ -17,13 +17,13 @@ class RequirementDTO:
     })
 
 
-@api.route('/<int:id>')
+@api.route('/id/<int:id>')
 @api.response(200, 'Success')
 class SingleId(Resource):
     def get(self, id):
         """Find one entry by id"""
-        return elastic_controller.get(id)
-    
+        return elastic_controller.by_index_id(id)
+
     @api.expect(RequirementDTO.creation)
     def post(self, id):
         """Insert one entry"""
@@ -32,6 +32,25 @@ class SingleId(Resource):
     def delete(self, id):
         """Delete one entry by id"""
         return elastic_controller.delete(id)
+
+
+@api.route('/prefix/<string:prefix>')
+@api.response(200, 'Success')
+class SinglePrefix(Resource):
+    def get(self, prefix):
+        """Find one entry by prefix"""
+        print('here')
+        return elastic_controller.by_prefix(prefix)
+
+
+@api.route('/title/<string:title>')
+@api.response(200, 'Success')
+class SingleTitle(Resource):
+    def get(self, title):
+        """Find one entry by title"""
+        print('here')
+        return elastic_controller.by_title(title)
+
 
 @api.route('')
 @api.response(200, 'Success')

@@ -3,6 +3,7 @@ from flask import Blueprint
 
 from api import current_config
 from api.v1.endpoints.elastic import api as elastic_namespace
+from api.v1.endpoints.project import api as project_namespace
 
 blueprint_api_v1 = Blueprint('api_v1', __name__)
 
@@ -25,3 +26,4 @@ api_v1 = Api(blueprint_api_v1,
 
 # Add namespace to api
 api_v1.add_namespace(elastic_namespace)
+api_v1.add_namespace(project_namespace)
